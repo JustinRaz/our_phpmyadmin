@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+}
+
+body{
+    font-family: Sans-serif;
+}
+
+.container{
+    display: flex;
+}
+
+.fixed{
+    width: auto;
+}
+
+.flex-item{
+    flex-grow: 1;
+}
+    
+#db_list_title_container {
+    position: relative;
+}
+#db_list_title {
+    position: absolute;
+   /*  top: 0;
+    left: 0; */
+  
+  
+    /* Rotate from top left corner (not default) */
+    transform: rotate(90deg);
+}
