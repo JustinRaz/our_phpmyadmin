@@ -34,17 +34,11 @@ if(!$connection){
     <div class="container">
 
         <div id="db_list_container" class="fixed">
-            <div id="db_list_title_container">
-                <h3 id="db_list_title"
-                <?php if(isset($_GET["db"])):?>
-                        style="transform: rotate(90deg)"
-                    <?php else:?>
-                        
-                    <?php endif?>
-                >Databases</h3>
-
-
-            </div>
+            <?php if(isset($_GET["db"])):?>
+                <button><h3 id="db_list_title">DB</h3></button>
+            <?php else:?>
+                <h3 id="db_list_title">Databases</h3>
+            <?php endif?>
 
 
             <ul id="db_list" 
