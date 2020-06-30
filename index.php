@@ -39,8 +39,7 @@ if(!$connection){
             <?php else:?>
                 <h3 id="db_list_title">Databases</h3>
             <?php endif?>
-
-
+          
             <ul id="db_list" 
                 <?php if(isset($_GET["db"])):?>
                     style="display: none"
