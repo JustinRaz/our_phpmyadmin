@@ -13,7 +13,7 @@ $password = "";
 if(isset($_GET["db"])){
     $connection = mysqli_connect($servername, $username, $password, $_GET["db"]);
 }else{
-    $connection = mysqli_connect($servfername, $username, $password);
+    $connection = mysqli_connect($servername, $username, $password);
 }
 
 if(!$connection){
