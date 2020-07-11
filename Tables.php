@@ -37,6 +37,9 @@
                 <div class="alert alert-danger" role="alert">
                     The database is empty.
                 </div>
+                <div class="alert alert-success" role="alert">
+                    <h4>Insert a new Table</h4>
+                </div>
             <?php endif?>
         
     </div>
