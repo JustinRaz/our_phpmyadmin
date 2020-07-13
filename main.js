@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     $("#db-list > li").mouseover(function () { 
         prev_hover_query_join_btn = $("#db-list > #"+this.id+" > #query-join-btn");
-        prev_hover_drop_btn = $("#db-list > #"+this.id+" > #drop-btn");
+        prev_hover_drop_btn = $("#db-list > #"+this.id+" > #drop_form > #drop_btn_modal");
         prev_hover_drop_btn.show();
         prev_hover_query_join_btn.show();
     }).mouseleave(() => {

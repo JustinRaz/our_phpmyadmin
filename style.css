@@ -36,7 +36,7 @@ h3 {
     width: 100vw;
 }
 
-#db-list li #drop-btn, #db-list li #query-join-btn {
+#drop_btn_modal, #db-list li #drop-btn, #db-list li #query-join-btn {
     float: right;
     color: white;
     margin-left: 5px;
