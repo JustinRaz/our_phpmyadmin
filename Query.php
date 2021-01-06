@@ -101,34 +101,17 @@
                 No tables found
             <?php endif?>
         </ul>
-        <button class='btn btn-danger' id="reset">RESET</button>
         <br/>
 
-        <label for="groupby">Group By Options:</label>
-        <select id="groupby">
-            <option value=''>None</option>
-        </select>
-        <br/>
-        <label for="orderby">Order By Options:</label>
-        <select id="orderby">
-            <option value=''>None</option>
-        </select>
-        
-        <button id="submit">Submit</button>
-        <button id="submitWithCount">Submit with Count</button>
-
+        <hr/><h4>Left Columns to Select Choices</h4><br/>
         <ul id="selectOptions">
         </ul>
 
+        <hr/><h4>Columns to Join Choices</h4><br/>
         <ul id="columnOptions">
         </ul>
 
         <div class="row">
-            <div class="col-6">
-
-            </div>
-            <div class="col-6">
-            </div>
 
         <script>
             var fromUrl = '';
@@ -350,7 +333,7 @@
                     // Select Section
                     $("#selectOptions").empty();
                     if (joinCount == 0){
-                        $("#selectOptions").append("<hr/>Left Columns to Select Choices:<br/>");
+                        // $("#selectOptions").append("a");
                         SelectWhereChoices("#selectOptions",from_table);
                         
                     }
@@ -362,7 +345,7 @@
                         choiceObject = possibleJoins;
                     }
                     $("#columnOptions").empty();
-                    $("#columnOptions").append("<hr/>Columns to Join Choices:<br/>")
+                    // $("#columnOptions").append("<hr/>Columns to Join Choices:<br/>")
                     for (var columns in choiceObject[from_table]){
                         $("#columnOptions").append(
                             "<li class='joinColumns' id='joinColumns"+columns+"'>"+columns
@@ -535,6 +518,31 @@
             });
         </script>
 
+        </div>
+        
+        <div>
+            <hr/>
+            <h4>Group and Order</h4>
+            <label for="groupby">Group By Options:</label>
+            <select id="groupby">
+                <option value=''>None</option>
+            </select>
+            <br/>
+            <label for="orderby">Order By Options:</label>
+            <select id="orderby">
+                <option value=''>None</option>
+            </select>
+            
+        </div>
+        <div>
+        
+        <hr/>
+            <h4>Perform Query</h4>
+        <p>
+                <button class='btn btn-danger' id="reset">RESET</button>
+                <button class='btn btn-primary' id="submit">Submit</button>
+                <button class='btn btn-primary' id="submitWithCount">Submit with Count</button>
+            </p>
         </div>
 </div>
         
