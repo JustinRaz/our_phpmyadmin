@@ -4,8 +4,20 @@
 
 <!DOCTYPE html>
 <html>
-    <head><title>Tables</title></head>
+    <head>
+        <title>Tables</title>
+        <?php require "dependencies.php"?>
+
+    <style>
+        .fake-link {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+    </head>
     <body>
+        <?php require "navbar.php"?>
         <script
                 src="https://code.jquery.com/jquery-3.5.1.min.js"
                 integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
@@ -75,17 +87,21 @@
 </script>
 
 
-
-        Tables:
+<div class="container">
+    <h4>Tables in <?php echo $_GET['database']?></h4> 
+        
+    <p> <em>select table</em> </p>
         <ul>
         <?php
             $result = $conn->query("SHOW TABLES FROM {$_GET['database']}");
             while ($row = $result->fetch_row()) : ?> 
-                <li id="<?php echo $row[0] ?>" class="tables"><?php echo $row[0] ?></li>
+                <li id="<?php echo $row[0] ?>" class="tables"><span class='fake-link'><?php echo $row[0] ?></span></li>
             <?php endwhile; ?>
+            <?php if($result->num_rows == 0): ?>
+                No tables found
+            <?php endif?>
         </ul>
-        
-        <button id="reset">Reset</button>
+        <button class='btn btn-danger' id="reset">RESET</button>
         <br/>
 
         <label for="groupby">Group By Options:</label>
@@ -106,6 +122,14 @@
 
         <ul id="columnOptions">
         </ul>
+
+        <div class="row">
+            <div class="col-6">
+
+            </div>
+            <div class="col-6">
+            </div>
+
         <script>
             var fromUrl = '';
             var selectUrl = '';
@@ -510,5 +534,9 @@
                 });
             });
         </script>
+
+        </div>
+</div>
+        
     </body>
 </html>
