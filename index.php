@@ -12,7 +12,7 @@
 <html>
 <head>
     <title>Databases</title>    
-    <?php require "dependencies.php"?>
+    <?php require "dependencies.php"?>  
 </head>
 <body>
     <?php require "navbar.php"?>

@@ -12,9 +12,7 @@
 <html>
 <head>
     <title>Tables</title>
-    
     <?php require "dependencies.php"?>
-
 </head>
 <body>
     <?php require "navbar.php"?>
@@ -24,12 +22,12 @@
             <?php echo $_GET['database'] ?>
         </h3>
             <?php if(mysqli_num_rows($tables) != 0):?>
-                <ul>
+                <ul class="list-group">
                     <?php while ($row = $tables->fetch_row()) : ?>
-                        <li>
-                            <a href="./Rows.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $row[0] ?>"><?php echo $row[0]?></a>
-                            <a href="./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $row[0] ?>&where=drop">DROP</a>
-                            <a href="./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $row[0] ?>&where=truncate">TRUNCATE</a>
+                        <li class="list-group-item">
+                            <a href="./Rows.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $row[0] ?>" class="m-2 float-left"><?php echo $row[0]?></a>
+                            <a href="./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $row[0] ?>&where=drop" class="btn btn-danger float-right m-2">DROP</a>
+                            <a href="./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $row[0] ?>&where=truncate" class="btn btn-primary float-right m-2">TRUNCATE</a>
                         </li>
                     <?php endwhile; ?>
                 </ul>
