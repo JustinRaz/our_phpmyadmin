@@ -141,21 +141,26 @@
                         }).append(
                             $('<input/>',{
                                 'type':'checkbox',
-                                'class':'formselectColumns'+table,
+                                'class':'form-check-input selectColumns'+table,
                                 'id':'selectColumns'+table+columns,
                                 'value':columns,
                                 'checked':'checked',
                             })
                         ).append(
                             $('<label/>',{
-                                'class': 'form-check-label'
+                    
+                                'class': 'form-check-label',
                                 'for':'selectColumns'+table+columns,
                                 text:columns,
                             })
                         ).append(
-                            $('<div/>',{
+                            $('<span/>',{
+                                'class': 'form-check'
                             }).addClass('divWhere').addClass('div'+table+columns).append(
-                                $('<span/>',{text:'Where: '})
+                                $('<span/>',{
+                                    'style': 'font-weight: 700; margin-left: 10px',
+                                    text:'where: '
+                                })
                             ).append(
                                 $('<label/>',{
                                     'for': 'where'+table+columns,
