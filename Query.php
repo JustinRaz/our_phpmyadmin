@@ -127,10 +127,10 @@
             
             function SelectWhereChoices(appenedAt,table){
                 $(appenedAt).append(
-                    "<button id='"+table+"Check'>Check all</button><br/>"
+                    "<button class ='btn btn-primary' id='"+table+"Check' style='margin-right:3px'>Check all</button>"
                 );
                 $(appenedAt).append(
-                    "<button id='"+table+"Uncheck'>Uncheck all</button><br/>"
+                    "<button class ='btn btn-secondary' id='"+table+"Uncheck'>Uncheck all</button>"
                 );
                 var getDatatype = '';
                 for (var columns in col_definition[table]){
@@ -141,13 +141,14 @@
                         }).append(
                             $('<input/>',{
                                 'type':'checkbox',
-                                'class':'selectColumns'+table,
+                                'class':'formselectColumns'+table,
                                 'id':'selectColumns'+table+columns,
                                 'value':columns,
                                 'checked':'checked',
                             })
                         ).append(
                             $('<label/>',{
+                                'class': 'form-check-label'
                                 'for':'selectColumns'+table+columns,
                                 text:columns,
                             })
