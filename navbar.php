@@ -9,7 +9,7 @@
         <div class="container">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="./">Databases <?php if(!isset($_GET['database'])):?><span class="sr-only">(current)<?php endif?></span></a>
+                    <a class="nav-link btn btn-warning" href="./">Databases <?php if(!isset($_GET['database'])):?><span class="sr-only">(current)<?php endif?></span></a>
                 </li>
             </ul>
         </div>
