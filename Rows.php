@@ -55,7 +55,7 @@
             <?php foreach ($value1 as $key2=>$value2) : ?>
                 <?php echo $key2 ?> : '<?php echo $value2 ?>',
             <?php endforeach; ?>
-            },
+            }
     <?php endforeach; ?>
             };
     </script>

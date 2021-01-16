@@ -27,6 +27,8 @@
 
         if (!is_null($countUrl)){
             $formattedSelect = 'COUNT(*),';
+        }else {
+            $formattedSelect = '';
         }
         $formattedSelect .= FormatSelect();
         if ($formattedSelect == ''){
@@ -96,10 +98,10 @@
             printf("   %s\n", $finfo->name);
         }
         $_SESSION['query']['record'] = array();
-        for ($i=0 ; $row=$dupli->fetch_row() ; $i++) {
+        for ($i=0 ; $row=$dupli->fetch_assoc() ; $i++) {
             $_SESSION['query']['record'][$i] = array();
-            for ($j=0 ; isset($row[$j]) ; $j++){
-                $_SESSION['query']['record'][$i][$j] = $row[$j];
+            for ($j=0 ; $j<count($_SESSION['query']['columnName']) ; $j++){
+                $_SESSION['query']['record'][$i][$j] = $row[$_SESSION['query']['columnName'][$j]];
             }
         }
     }
