@@ -49,8 +49,8 @@
                 <input type="button" class="delete float-right btn btn-danger" value="Delete">
             </div>
         </div>
-        <input type="button" class="add" value="Add another column"/>
-        <input type="submit" class="submit" value="Create Table"/>
+        <input type="button" class="add btn btn-primary" value="Add another column"/>
+        <input type="submit" class="submit btn btn-success" value="Create Table"/>
         <input type="hidden" name="query" id="query"/>
         <input type="hidden" name="database" value="<?php echo $_GET['database'] ?>"/>
     </form>
