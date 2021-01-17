@@ -29,6 +29,8 @@
                     <?php while ($row = $tables->fetch_row()) : ?>
                         <li>
                             <a href="./Rows.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $row[0] ?>"><?php echo $row[0]?></a>
+                            <a href="./insertion_v2.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $row[0] ?>">INSERT</a>
+                            <a href="./UpdateTableForm.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $row[0] ?>">EDIT</a>
                             <a href="./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $row[0] ?>&where=drop">DROP</a>
                             <a href="./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $row[0] ?>&where=truncate">TRUNCATE</a>
                         </li>

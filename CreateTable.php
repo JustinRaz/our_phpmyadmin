@@ -10,5 +10,5 @@
     }else {
         header("Location: ./tables.php?database={$_POST['database']}");
     }
-    print_r($_GET['test2'][1]=='');
+    $conn->close();
 ?>
