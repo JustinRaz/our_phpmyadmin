@@ -29,7 +29,6 @@
                     <?php while ($row = $tables->fetch_row()) : ?>
                         <li class="list-group-item">
                             <a class="m-2 float-left" href="./Rows.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $row[0] ?>"><?php echo $row[0]?></a>
-                            <a class="m-2 float-right btn btn-success" href="./insertion_v2.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $row[0] ?>">INSERT</a>
                             <a class="m-2 float-right btn btn-primary" href="./UpdateTableForm.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $row[0] ?>">EDIT</a>
                             <a class="m-2 float-right btn btn-danger" href="./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $row[0] ?>&where=drop">DROP</a>
                             <a class="m-2 float-right btn btn-warning" href="./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $row[0] ?>&where=truncate">TRUNCATE</a>

@@ -92,7 +92,7 @@
                         <span class="name"><?php echo $row['column'] ?></span>
                         <input type="text" class="newname" placeholder="rename..."/>
                         <input type="button" class="btn btn-danger remove float-right" value="Remove Column"/>
-                        <input type="button" class="btn btn-success rename float-right" value="Rename Column"/>
+                        <input type="button" class="btn btn-success rename float-right" value="Rename Column" style="margin-right:1em;"/>
                         <input type="hidden" class="datatype" value="<?php echo $row['datatype'] ?>"/>
                         <input type="hidden" class="length" value="<?php echo $row['length'] ?>"/>
                         <input type="hidden" class="default" value="<?php echo $row['default'] ?>"/>
