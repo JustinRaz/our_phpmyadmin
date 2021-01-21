@@ -16,87 +16,92 @@
     
     <?php require "navbar.php"?>
 
-<?php
-    $conn = new mysqli('localhost','root','',"{$_GET['database']}");
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+    <div class="container">
 
-    $rows = $conn->query("SELECT * FROM {$_GET['database']}.{$_GET['table']}");
-    print_r($conn->error);
-    $columns = $conn->query("SELECT COLUMN_NAME AS `column`
-                                FROM INFORMATION_SCHEMA.COLUMNS
-                                WHERE TABLE_NAME = '{$_GET['table']}'
-                                AND TABLE_SCHEMA = '{$_GET['database']}'");
-    $columnContainer = array();
-    while ($row = $columns->fetch_assoc()){
-        $columnContainer[] = $row['column'];
-    }
-    $PKkey = '';
-    $PKarray = array();
-    $PKs = $conn->query("SHOW KEYS FROM {$_GET['database']}.{$_GET['table']} WHERE Key_name = 'PRIMARY'");
-    while ($eachPK = $PKs->fetch_assoc()){
-        $PKkey .= "&idKey[]={$eachPK['Column_name']}";
-        $PKarray[] = $eachPK['Column_name'];
-    }
-    $result = $conn->query( "SELECT TABLE_NAME AS `table`,
-                                    COLUMN_NAME AS `column`, 
-                                    DATA_TYPE AS datatype 
-                                    FROM INFORMATION_SCHEMA.COLUMNS 
+        <a href="./Tables.php?database=<?php echo $_GET['database'] ?>">Back</a>
+    <?php
+        $conn = new mysqli('localhost','root','',"{$_GET['database']}");
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        $rows = $conn->query("SELECT * FROM {$_GET['database']}.{$_GET['table']}");
+        print_r($conn->error);
+        $columns = $conn->query("SELECT COLUMN_NAME AS `column`
+                                    FROM INFORMATION_SCHEMA.COLUMNS
                                     WHERE TABLE_NAME = '{$_GET['table']}'
                                     AND TABLE_SCHEMA = '{$_GET['database']}'");
-    $_SESSION['table_col_definition'] = array();
-    while ($row = $result->fetch_assoc()){
-        if (!isset($_SESSION['table_col_definition'][$row['table']])){
-            $_SESSION['table_col_definition'][$row['table']] = array();
+        $columnContainer = array();
+        while ($row = $columns->fetch_assoc()){
+            $columnContainer[] = $row['column'];
         }
-        $_SESSION['table_col_definition'][$row['table']][$row['column']] = $row['datatype'];
-    }
-?>
-    <script>
-        var col_definition = {
-    <?php
-        foreach ($_SESSION['table_col_definition'] as $key1=>$value1) : ?>
-            <?php echo $key1 ?> : {
-            <?php foreach ($value1 as $key2=>$value2) : ?>
-                <?php echo $key2 ?> : '<?php echo $value2 ?>',
-            <?php endforeach; ?>
-            },
-    <?php endforeach; ?>
-            };
-    </script>
+        $PKkey = '';
+        $PKarray = array();
+        $PKs = $conn->query("SHOW KEYS FROM {$_GET['database']}.{$_GET['table']} WHERE Key_name = 'PRIMARY'");
+        while ($eachPK = $PKs->fetch_assoc()){
+            $PKkey .= "&idKey[]={$eachPK['Column_name']}";
+            $PKarray[] = $eachPK['Column_name'];
+        }
+        $result = $conn->query( "SELECT TABLE_NAME AS `table`,
+                                        COLUMN_NAME AS `column`, 
+                                        DATA_TYPE AS datatype 
+                                        FROM INFORMATION_SCHEMA.COLUMNS 
+                                        WHERE TABLE_NAME = '{$_GET['table']}'
+                                        AND TABLE_SCHEMA = '{$_GET['database']}'");
+        $_SESSION['table_col_definition'] = array();
+        while ($row = $result->fetch_assoc()){
+            if (!isset($_SESSION['table_col_definition'][$row['table']])){
+                $_SESSION['table_col_definition'][$row['table']] = array();
+            }
+            $_SESSION['table_col_definition'][$row['table']][$row['column']] = $row['datatype'];
+        }
+    ?>
+        <script>
+            var col_definition = {
+        <?php
+            foreach ($_SESSION['table_col_definition'] as $key1=>$value1) : ?>
+                <?php echo $key1 ?> : {
+                <?php foreach ($value1 as $key2=>$value2) : ?>
+                    <?php echo $key2 ?> : '<?php echo $value2 ?>',
+                <?php endforeach; ?>
+                },
+        <?php endforeach; ?>
+                };
+        </script>
 
-    <div class="container">
-        
-        <h2>Rows in table <?php echo $_GET['database'] ?>.<?php echo $_GET['table'] ?></h2>
-        <a class="m-2 float-left btn btn-success" href="./insertion_v2.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>">INSERT TABLE</a>
-        <table class="table">
-        <?php while ($row = $rows->fetch_assoc()) : ?>
-            <tr>
-            <?php foreach ($columnContainer as $value) : ?>
-                <td>
-                    <?php echo $row[$value] ?>
-                </td>
-            <?php endforeach; ?>
-            <?php
-                $PKvalue = '';
-                foreach ($PKarray as $value){
-                    $PKvalue .= "&idValue[]={$row[$value]}";
-                }
-            ?>
-                <td>
-                    <?php if (!empty($PKarray)) : ?>
-                        <a class="btn btn-danger" href='./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $_GET['table'] ?><?php echo $PKkey ?><?php echo $PKvalue ?>'>DELETE</a>
-                    <?php else: ?>
-                        <span>Cannot Delete, No Column With A Primary Key Constraint</span>
-                    <?php endif; ?>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-        </table>
-            <div id="deleteWhere">
-            </div>
-            <button class="btn btn-danger mt-2" id="submit">Multiple Delete</button>
+        <div class="container">
+            
+            <h2>Rows in table <?php echo $_GET['database'] ?>.<?php echo $_GET['table'] ?></h2>
+            <a class="m-2 float-left btn btn-success" href="./insertion_v2.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>">INSERT TABLE</a>
+            <table class="table">
+            <?php while ($row = $rows->fetch_assoc()) : ?>
+                <tr >
+                <?php foreach ($columnContainer as $value) : ?>
+                    <td>
+                        <?php echo $row[$value] ?>
+                    </td>
+                <?php endforeach; ?>
+                <?php
+                    $PKvalue = '';
+                    foreach ($PKarray as $value){
+                        $PKvalue .= "&idValue[]={$row[$value]}";
+                    }
+                ?>
+                    <td>
+                        <?php if (!empty($PKarray)) : ?>
+                            <a class="btn btn-danger float-right" href='./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $_GET['table'] ?><?php echo $PKkey ?><?php echo $PKvalue ?>'>DELETE</a>
+                            <a class="btn btn-warning float-right mr-1" href=''>UPDATE</a>
+                        <?php else: ?>
+                            <span>Cannot Delete, No Column With A Primary Key Constraint</span>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+            </table>
+                <div id="deleteWhere">
+                </div>
+                <button class="btn btn-danger mt-2" id="submit">Multiple Delete</button>
+        </div>
     </div>
     <script>
         var whereUrl = '';

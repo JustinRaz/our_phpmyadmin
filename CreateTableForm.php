@@ -57,7 +57,7 @@
             <input type="hidden" name="query" id="query"/>
             <input type="hidden" name="database" value="<?php echo $_GET['database'] ?>"/>
         </form>
-    </div>
+    
     <script>
         let message = '';
         let database = '<?php echo $_GET['database'] ?>';
