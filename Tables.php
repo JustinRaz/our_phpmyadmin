@@ -21,7 +21,7 @@
         <h3>
             <?php echo $_GET['database'] ?>
         </h3>
-        <a href="./CreateTableForm.php?database=<?php echo $_GET['database'] ?>" class="btn btn-secondary text-uppercase">Create Table</a>
+        <a href="./CreateTableForm.php?database=<?php echo $_GET['database'] ?>" class="btn btn-secondary text-uppercase m-2">Create Table</a>
             <?php if(mysqli_num_rows($tables) != 0):?>
                 <ul class="list-group">
                     <?php while ($row = $tables->fetch_row()) : ?>

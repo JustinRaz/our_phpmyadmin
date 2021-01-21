@@ -24,12 +24,15 @@
     <div class="container">
         <div id="db-list-container" class="row">
             <ul id="db-list" class="list-group">
-                <form id="newdbform" action="./index.php" method="POST">
-                    <label for="newdb">Add New Database:</label>
-                        <input type="text" id="newdb" name="newdb"/>
-                    <input type="button" id="createdb" value="Create Database">
-                    <input type="hidden" id="query" name="query">
+                <div class="alert alert-primary">
+                <form id="newdbform" action="./index.php" method="POST" class="form">
+                    <div class="input-group">
+                        <input class="form-control" type="text" id="newdb" name="newdb" placeholder="Add New Database"/>
+                        <input class="btn btn-outline-success" id="createdb" value="Create Database">
+                        <input type="hidden" id="query" name="query">
+                    </div>
                 </form>
+                </div>
                 <h3>Databases</h3>
                 <?php $count = 0 ?>
                 <?php while ($row = $databases->fetch_row()): ?>
