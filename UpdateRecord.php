@@ -8,7 +8,7 @@
     if ($conn->query($_POST['query']) == false){
         echo $conn->error;
     }else {
-        header("Location: ./tables.php?database={$_POST['database']}");
+        header("Location: ./rows.php?database={$_POST['db']}&table={$_POST['tb']}");
     }
     $conn->close();
 ?>

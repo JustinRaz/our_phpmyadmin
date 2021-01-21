@@ -8,52 +8,56 @@
     <?php require "dependencies.php"?>
 </head>
 <body>
-    <a href="./Tables.php?database=<?php echo $_GET['database'] ?>">Back</a>
-    <form action="./CreateTable.php" method="POST">
-        <label>
-            Table Name
-            <input type="text" id="tableName" required="required"/>
-        </label>
-        <div id="createTableForm">
-            <div id="firstColumn" class="column">
-                <label>
-                    Name
-                    <input type="text" class="name" required="required"/>
-                </label>
-                <label>
-                    Type
-                    <select class="type"  required="required">
-                        <option value="int" selected="selected">Int</option>
-                        <option value="varchar">Varchar</option>
-                        <option value="text">Text</option>
-                        <option value="date">Date</option>
-                        <option value="datetime">DateTime</option>
-                    </select>
-                </label>
-                <label>
-                    Length
-                    <input type="number" class="length"/>
-                </label>
-                <label>
-                    Default Value
-                    <input type="text" class="default"/>
-                </label>
-                <label>
-                    Nullable
-                    <input type="checkbox" class="null" value="null"/>
-                </label>
-                <label>
-                    Primary Key + Auto Increment
-                    <input type="checkbox" class="ai" value="ai"/>
-                </label>
-                <input type="button" class="delete" value="Delete">
+    <?php require "navbar.php"?>
+
+    <div class="container">
+        <a href="./Tables.php?database=<?php echo $_GET['database'] ?>">Back</a>
+        <form action="./CreateTable.php" method="POST" class="container">
+            <label>
+                Table Name
+                <input type="text" id="tableName" required="required"/>
+            </label>
+            <div id="createTableForm">
+                <div id="firstColumn" class="column alert alert-primary">
+                    <label>
+                        Name
+                        <input type="text" class="name" required="required"/>
+                    </label>
+                    <label>
+                        Type
+                        <select class="type"  required="required">
+                            <option value="int" selected="selected">Int</option>
+                            <option value="varchar">Varchar</option>
+                            <option value="text">Text</option>
+                            <option value="date">Date</option>
+                            <option value="datetime">DateTime</option>
+                        </select>
+                    </label>
+                    <label>
+                        Length
+                        <input type="number" class="length"/>
+                    </label>
+                    <label>
+                        Default Value
+                        <input type="text" class="default"/>
+                    </label>
+                    <label>
+                        Nullable
+                        <input type="checkbox" class="null" value="null"/>
+                    </label>
+                    <label>
+                        Primary Key + Auto Increment
+                        <input type="checkbox" class="ai" value="ai"/>
+                    </label>
+                    <input type="button" class="delete float-right btn btn-danger" value="Delete">
+                </div>
             </div>
-        </div>
-        <input type="button" class="add" value="Add another column"/>
-        <input type="submit" class="submit" value="Create Table"/>
-        <input type="hidden" name="query" id="query"/>
-        <input type="hidden" name="database" value="<?php echo $_GET['database'] ?>"/>
-    </form>
+            <input type="button" class="add btn btn-primary" value="Add another column"/>
+            <input type="submit" class="submit btn btn-success" value="Create Table"/>
+            <input type="hidden" name="query" id="query"/>
+            <input type="hidden" name="database" value="<?php echo $_GET['database'] ?>"/>
+        </form>
+    
     <script>
         let message = '';
         let database = '<?php echo $_GET['database'] ?>';
