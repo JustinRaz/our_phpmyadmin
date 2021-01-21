@@ -23,78 +23,87 @@
     <?php require "dependencies.php"?>
 </head>
 <body>
-    <a href="./Tables.php?database=<?php echo $_GET['database'] ?>">Back</a>
-    <form id="renametableform" action="./UpdateTableForm.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>" method="POST">
-        <label for="tablename">Rename Table</label>
+    <?php require "navbar.php"?>
+
+    <div class="container">
+
+        <a href="./Tables.php?database=<?php echo $_GET['database'] ?>">Back</a>
+        <form class="alert alert-primary form" id="renametableform" action="./UpdateTableForm.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>" method="POST">
+            <label for="tablename" >Rename Table</label>
             <input id="tablename" type="text" name="query" value="<?php echo $_GET['table']?>"/>
-        <input class="renametable" type="button" value="Rename"/>
-        <input type="hidden" name="query" id="renametablequery"/>
-        <input type="hidden" name="rename" id="newroutetable"/>
-    </form>
-    <form id="addform" action="./UpdateTableForm.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>" method="POST">
-        <div id="createTableForm">
-            <div id="firstColumn" class="column">
-                <label>
-                    Name
-                    <input type="text" class="name" required="required"/>
-                </label>
-                <label>
-                    Type
-                    <select class="type"  required="required">
-                        <option value="int" selected="selected">Int</option>
-                        <option value="varchar">Varchar</option>
-                        <option value="text">Text</option>
-                        <option value="date">Date</option>
-                        <option value="datetime">DateTime</option>
-                    </select>
-                </label>
-                <label>
-                    Length
-                    <input type="number" class="length"/>
-                </label>
-                <label>
-                    Default Value
-                    <input type="text" class="default"/>
-                </label>
-                <label>
-                    Nullable
-                    <input type="checkbox" class="null" value="null"/>
-                </label>
-                <input type="submit" class="submit" value="Add Column to this Table"/>
+            <input class="renametable btn btn-success float-right" type="button" value="Rename"/>
+            <input type="hidden" name="query" id="renametablequery"/>
+            <input type="hidden" name="rename" id="newroutetable"/>
+        </form>
+        <form class="alert alert-primary" id="addform" action="./UpdateTableForm.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>" method="POST">
+            <div id="createTableForm">
+                <div id="firstColumn" class="column">
+                    <label>
+                        Name
+                        <input type="text" class="name" required="required"/>
+                    </label>
+                    <label>
+                        Type
+                        <select class="type"  required="required">
+                            <option value="int" selected="selected">Int</option>
+                            <option value="varchar">Varchar</option>
+                            <option value="text">Text</option>
+                            <option value="date">Date</option>
+                            <option value="datetime">DateTime</option>
+                        </select>
+                    </label>
+                    <label>
+                        Length
+                        <input type="number" class="length"/>
+                    </label>
+                    <label>
+                        Default Value
+                        <input type="text" class="default"/>
+                    </label>
+                    <br>
+                    <label>
+                        Nullable
+                        <input type="checkbox" class="null" value="null"/>
+                    </label>
+                    
+                    <input type="submit" class="submit float-right btn btn-success" value="Add Column to this Table"/>
+                    
+                </div>
             </div>
-        </div>
-        <input type="hidden" name="query" id="addquery"/>
-        <input type="hidden" name="database" value="<?php echo $_GET['database'] ?>"/>
-    </form>
-    <form id="updateform" action="./UpdateTableForm.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>" method="POST">
-        <ol class="columns"> Columns:
-            <?php 
-                $conn = new mysqli('localhost','root','');
-                $result = $conn->query( "SELECT COLUMN_NAME AS `column`,
-                                                DATA_TYPE AS datatype,
-                                                CHARACTER_MAXIMUM_LENGTH AS `length`,
-                                                COLUMN_DEFAULT AS `default`,
-                                                IS_NULLABLE AS nullable,
-                                                EXTRA AS `extra`
-                                            FROM INFORMATION_SCHEMA.COLUMNS 
-                                            WHERE TABLE_SCHEMA = '{$_GET['database']}'
-                                                AND TABLE_NAME = '{$_GET['table']}'");
-                while($row = $result->fetch_assoc()) : ?>
-                <li id="<?php echo $row['column'] ?>">
-                    <span class="name"><?php echo $row['column'] ?></span>
-                    <input type="text" class="newname" placeholder="rename..."/>
-                    <input type="button" class="rename" value="Rename"/>
-                    <input type="button" class="remove" value="Remove Column"/>
-                    <input type="hidden" class="datatype" value="<?php echo $row['datatype'] ?>"/>
-                    <input type="hidden" class="length" value="<?php echo $row['length'] ?>"/>
-                    <input type="hidden" class="default" value="<?php echo $row['default'] ?>"/>
-                    <input type="hidden" class="nullable" value="<?php echo $row['nullable'] ?>"/>
-                    <input type="hidden" class="extra" value="<?php echo $row['extra'] ?>"/>
-                </li>
-            <?php endwhile; ?>
-        </ol>
-        <input type="hidden" name="query" id="updatequery"/>
-    </form>
+            <input type="hidden" name="query" id="addquery"/>
+            <input type="hidden" name="database" value="<?php echo $_GET['database'] ?>"/>
+        </form>
+        <form class="alert alert-primary" id="updateform" action="./UpdateTableForm.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>" method="POST">
+            <ol class="columns"> 
+                <h5>Columns:</h5>
+                <?php 
+                    $conn = new mysqli('localhost','root','');
+                    $result = $conn->query( "SELECT COLUMN_NAME AS `column`,
+                                                    DATA_TYPE AS datatype,
+                                                    CHARACTER_MAXIMUM_LENGTH AS `length`,
+                                                    COLUMN_DEFAULT AS `default`,
+                                                    IS_NULLABLE AS nullable,
+                                                    EXTRA AS `extra`
+                                                FROM INFORMATION_SCHEMA.COLUMNS 
+                                                WHERE TABLE_SCHEMA = '{$_GET['database']}'
+                                                    AND TABLE_NAME = '{$_GET['table']}'");
+                    while($row = $result->fetch_assoc()) : ?>
+                    <li class="m-2" id="<?php echo $row['column'] ?>">
+                        <span class="name"><?php echo $row['column'] ?></span>
+                        <input type="text" class="newname" placeholder="rename..."/>
+                        <input type="button" class="btn btn-danger remove float-right" value="Remove Column"/>
+                        <input type="button" class="btn btn-success rename float-right" value="Rename Column"/>
+                        <input type="hidden" class="datatype" value="<?php echo $row['datatype'] ?>"/>
+                        <input type="hidden" class="length" value="<?php echo $row['length'] ?>"/>
+                        <input type="hidden" class="default" value="<?php echo $row['default'] ?>"/>
+                        <input type="hidden" class="nullable" value="<?php echo $row['nullable'] ?>"/>
+                        <input type="hidden" class="extra" value="<?php echo $row['extra'] ?>"/>
+                    </li>
+                <?php endwhile; ?>
+            </ol>
+            <input type="hidden" name="query" id="updatequery"/>
+        </form>
+    </div>
     <script>
         let message = '';
         let database = '<?php echo $_GET['database'] ?>';

@@ -69,6 +69,7 @@
     <div class="container">
         
         <h2>Rows in table <?php echo $_GET['database'] ?>.<?php echo $_GET['table'] ?></h2>
+        <a class="m-2 float-left btn btn-success" href="./insertion_v2.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>">INSERT TABLE</a>
         <table class="table">
         <?php while ($row = $rows->fetch_assoc()) : ?>
             <tr>
@@ -93,6 +94,9 @@
             </tr>
         <?php endwhile; ?>
         </table>
+            <div id="deleteWhere">
+            </div>
+            <button class="btn btn-danger mt-2" id="submit">Multiple Delete</button>
     </div>
     <script>
         var whereUrl = '';
