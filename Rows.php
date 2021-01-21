@@ -22,7 +22,7 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $rows = $conn->query("SELECT * FROM {$_GET['database']}.{$_GET['table']}");
+    $rows = $conn->query("SELECT * FROM {$_GET['database']}.`{$_GET['table']}`");
     print_r($conn->error);
     $columns = $conn->query("SELECT COLUMN_NAME AS `column`
                                 FROM INFORMATION_SCHEMA.COLUMNS
@@ -34,14 +34,14 @@
     }
     $PKkey = '';
     $PKarray = array();
-    $PKs = $conn->query("SHOW KEYS FROM {$_GET['database']}.{$_GET['table']} WHERE Key_name = 'PRIMARY'");
+    $PKs = $conn->query("SHOW KEYS FROM {$_GET['database']}.`{$_GET['table']}` WHERE Key_name = 'PRIMARY'");
     while ($eachPK = $PKs->fetch_assoc()){
         $PKkey .= "&idKey[]={$eachPK['Column_name']}";
         $PKarray[] = $eachPK['Column_name'];
     }
     $result = $conn->query( "SELECT TABLE_NAME AS `table`,
                                     COLUMN_NAME AS `column`, 
-                                    DATA_TYPE AS datatype 
+                                    DATA_TYPE AS datatype
                                     FROM INFORMATION_SCHEMA.COLUMNS 
                                     WHERE TABLE_NAME = '{$_GET['table']}'
                                     AND TABLE_SCHEMA = '{$_GET['database']}'");
@@ -64,6 +64,7 @@
             },
     <?php endforeach; ?>
             };
+            console.log(col_definition);
     </script>
 
     <div class="container">
@@ -71,11 +72,25 @@
         <h2>Rows in table <?php echo $_GET['database'] ?>.<?php echo $_GET['table'] ?></h2>
         <a class="m-2 float-left btn btn-success" href="./insertion_v2.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>">INSERT TABLE</a>
         <table class="table">
+        
+        <?php $i=0; $pk=''; foreach ($columnContainer as $value) : if ($i==0){$pk=$value;$i++;}?>
+            <th>
+                <?php echo $value ?>
+            </th>
+        <?php endforeach; ?>
+            <th>
+                Action
+            </th>
         <?php while ($row = $rows->fetch_assoc()) : ?>
             <tr>
             <?php foreach ($columnContainer as $value) : ?>
-                <td>
-                    <?php echo $row[$value] ?>
+                <td class="updatefieldtext">
+                    <span><?php echo $row[$value] ?></span>
+                    <input class="firstupdate" type="hidden" value="<?php echo $value ?>"/>
+                    <input class="secondupdate" type="hidden" value="<?php echo $pk ?>"/>
+                </td>
+                <td class="updatefieldinput" style="display:none">
+                    <input class="updatefield" type="text" value="<?php echo $row[$value] ?>"/>
                 </td>
             <?php endforeach; ?>
             <?php
@@ -98,8 +113,13 @@
             </div>
             <button class="btn btn-danger mt-2" id="submit">Multiple Delete</button>
     </div>
+        <form id="queryform" action="./UpdateRecord.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>" method="POST">
+            <input id="query" type="hidden" name="query" value=""/>
+            <input type="hidden" name="db" value="<?php echo $_GET['database'] ?>"/>
+            <input type="hidden" name="tb" value="<?php echo $_GET["table"] ?>"/>
+        </form>
     <script>
-        var whereUrl = '';
+        var whereUrl = "";
         var whereCount = 0;
         function SelectWhereChoices(appenedAt,table){
             console.log(table);
@@ -300,6 +320,25 @@
                     url += 'from=<?php echo $_GET['table'] ?>&'+whereUrl;
                     window.location.href = url;
                 }
+            });
+            $('.updatefieldtext').on('dblclick',function(){
+                $(this).css({"display" : "none"});
+                $(this).next().css({"display" : "table-cell"});
+            });
+            $(':not(td)').on('click',function(){
+                // console.log('fdsfds')
+                $('.updatefieldtext').css({"display" : "table-cell"});
+                $('.updatefieldinput').css({"display" : "none"});
+            });
+            $('.updatefield').on('focusout',function(){
+                let column = $(this).parent().prev().find('.firstupdate').val();
+                let pk = $(this).parent().prev().find('.secondupdate').val();
+                let rowPk = $(this).parent().parent().first().find('.updatefieldtext').find('span').html();
+                let query = "UPDATE <?php echo $_GET['database'] ?>.`<?php echo $_GET['table'] ?>` SET " +column+ "='" + $(this).val()+ "' WHERE " +pk+ "=" +rowPk;
+                console.log(query);
+                console.log($(this).parent().parent().first().find('.updatefieldtext').find('span').html())
+                $("#query").val(query);
+                $("#queryform").submit();
             });
         });
     </script>
