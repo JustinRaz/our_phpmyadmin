@@ -53,7 +53,7 @@
             }
             $_SESSION['sql'].=")";
             if ($con->query($_SESSION['sql']) === TRUE) {
-                echo "New record created successfully";
+                echo "<div class='m-2 alert alert-success'>New record created successfully</div>";
               } else {
                 echo "Error: " . $_SESSION['sql'] . "<br>" . $con->error;
               }
@@ -231,7 +231,7 @@
                         <button type="submit" class="btn btn-success" name="submit">Submit</button>
                     </form>
                 <?php else:?>
-                    <h3>Select Table</h3>                    
+                    <h3 class="text-danger">Select Table</h3>                    
                 <?php endif?>
             <?php else:?>
                 <h3>Select Database</h3>
@@ -246,7 +246,7 @@
             }else{
                 if(isset($_GET) && isset($_GET['database'])){
                     if(!isset($_GET['table'])){
-                        echo "<h3>Select Table</h3>";
+                        echo "<h3 class='text-danger'>Select Table</h3>";
                     }else{
                         echo "<h3>Submit Form</h3>";
                     }

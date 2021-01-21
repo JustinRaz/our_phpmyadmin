@@ -3,13 +3,19 @@
 ?>
 <!DOCTYPE html>
 <html>
-<head><title>Tables</title></head>
+<head>
+    <title>Tables</title>
+    <?php require "dependencies.php"?>    
+</head>
 <body>
         <script
                 src="https://code.jquery.com/jquery-3.5.1.min.js"
                 integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
                 crossorigin="anonymous">
         </script>
+    
+    <?php require "navbar.php"?>
+
 <?php
     $conn = new mysqli('localhost','root','',"{$_GET['database']}");
     if ($conn->connect_error) {
@@ -60,34 +66,34 @@
             };
     </script>
 
-    Rows in table <?php echo $_GET['database'] ?>.<?php echo $_GET['table'] ?>
-    <table>
-    <?php while ($row = $rows->fetch_assoc()) : ?>
-        <tr>
-        <?php foreach ($columnContainer as $value) : ?>
-            <td>
-                <?php echo $row[$value] ?>
-            </td>
-        <?php endforeach; ?>
-        <?php
-            $PKvalue = '';
-            foreach ($PKarray as $value){
-                $PKvalue .= "&idValue[]={$row[$value]}";
-            }
-        ?>
-            <td>
-                <?php if (!empty($PKarray)) : ?>
-                    <a href='./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $_GET['table'] ?><?php echo $PKkey ?><?php echo $PKvalue ?>'>DELETE</a>
-                <?php else: ?>
-                    <span>Cannot Delete, No Column With A Primary Key Constraint</span>
-                <?php endif; ?>
-            </td>
-        </tr>
-    <?php endwhile; ?>
-    </table>
-        <div id="deleteWhere">
-        </div>
-        <button id="submit">Delete</button>
+    <div class="container">
+        
+        <h2>Rows in table <?php echo $_GET['database'] ?>.<?php echo $_GET['table'] ?></h2>
+        <table class="table">
+        <?php while ($row = $rows->fetch_assoc()) : ?>
+            <tr>
+            <?php foreach ($columnContainer as $value) : ?>
+                <td>
+                    <?php echo $row[$value] ?>
+                </td>
+            <?php endforeach; ?>
+            <?php
+                $PKvalue = '';
+                foreach ($PKarray as $value){
+                    $PKvalue .= "&idValue[]={$row[$value]}";
+                }
+            ?>
+                <td>
+                    <?php if (!empty($PKarray)) : ?>
+                        <a class="btn btn-danger" href='./Delete.php?database=<?php echo $_GET['database'] ?>&from=<?php echo $_GET['table'] ?><?php echo $PKkey ?><?php echo $PKvalue ?>'>DELETE</a>
+                    <?php else: ?>
+                        <span>Cannot Delete, No Column With A Primary Key Constraint</span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+        </table>
+    </div>
     <script>
         var whereUrl = '';
         var whereCount = 0;
