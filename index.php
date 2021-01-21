@@ -5,7 +5,11 @@
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-
+    if (isset($_POST['query'])){
+        if ($conn->query($_POST['query']) == false){
+            die($conn->error);
+        }
+    }
     $databases = $conn->query("SHOW DATABASES");
 ?>
 <!DOCTYPE html>
@@ -20,11 +24,17 @@
     <div class="container">
         <div id="db-list-container" class="row">
             <ul id="db-list" class="list-group">
+                <form id="newdbform" action="./index.php" method="POST">
+                    <label for="newdb">Add New Database:</label>
+                        <input type="text" id="newdb" name="newdb"/>
+                    <input type="button" id="createdb" value="Create Database">
+                    <input type="hidden" id="query" name="query">
+                </form>
                 <h3>Databases</h3>
                 <?php $count = 0 ?>
                 <?php while ($row = $databases->fetch_row()): ?>
                     <li id="<?php echo $count++?>"class="list-group-item">
-                        <a href="./Tables.php?database=<?php echo $row[0] ?>"><?php echo $row[0]?></a>
+                        <a class="name" href="./Tables.php?database=<?php echo $row[0] ?>"><?php echo $row[0]?></a>
                         <span id="drop_form">
                             <button id="drop_btn_modal"class="btn btn-danger" style="display: none" type="button"  data-toggle="modal" data-target="#drop_modal_<?php echo $count?>">
                                 DROP
@@ -56,5 +66,31 @@
         </div>
     </div>
     <script src="main.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(window).keydown(function(event){
+                if(event.keyCode == 13) {
+                    event.preventDefault();
+                }
+            });
+            $("#createdb").on("click",function(){
+                let newdb = $("#newdb").val();
+                if (newdb == ''){
+                    alert('Input is empty');
+                }else {
+                    let $existingDbs = $(".name");
+                    console.log($existingDbs.eq(0).html())
+                    for (var i=0 ; i<$existingDbs.length && newdb!=$existingDbs.eq(i).html() ; i++){}
+                    if (i < $existingDbs.length){
+                        alert('Another Database already has a similar name.');
+                    }else {
+                        $("#query").val(`CREATE DATABASE ${newdb}`);
+                        $("#newdbform").submit();
+                    }
+
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -2,13 +2,13 @@
     session_start();
 
     if(isset($_POST['submit'])){
-        $con = mysqli_connect("localhost","root","",$_GET['db']);
+        $con = mysqli_connect("localhost","root","",$_GET['database']);
         if (!$con){
             die ('Could not connect:' . mysqli_error());
         }
-        $_SESSION['sql']="insert into ".$_POST['db'].".".$_POST['table']." (";
-        $result = $con->query("SELECT `COLUMN_NAME`  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".$_GET['db']."' AND TABLE_NAME = '".$_GET['table']."'");
-        $res = $con->query("SELECT `COLUMN_NAME`,DATA_TYPE  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".$_GET['db']."' AND TABLE_NAME = '".$_GET['table']."'");
+        $_SESSION['sql']="insert into ".$_POST['database'].".".$_POST['table']." (";
+        $result = $con->query("SELECT `COLUMN_NAME`  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".$_GET['database']."' AND TABLE_NAME = '".$_GET['table']."'");
+        $res = $con->query("SELECT `COLUMN_NAME`,DATA_TYPE  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".$_GET['database']."' AND TABLE_NAME = '".$_GET['table']."'");
         if($result->num_rows>0){
             $cnt=$result->num_rows;
             $i=0;
@@ -30,11 +30,13 @@
                             $_SESSION['sql'].="'".$_POST[$row['COLUMN_NAME']]."'";
                     }elseif($row['DATA_TYPE']=="tinyint" || $row['DATA_TYPE']=="smallint" || $row['DATA_TYPE']=="mediumint" ||
                         $row['DATA_TYPE']=="int" || $row['DATA_TYPE']=="bigint"){
-                            if(is_int($_POST[$row['COLUMN_NAME']])){
+                            // if(is_int($_POST[$row['COLUMN_NAME']])){
+                                //FSR dli niya kwaon
                                 $_SESSION['sql'].=$_POST[$row['COLUMN_NAME']];
-                            }
+                            // }
                     }elseif($row['DATA_TYPE']=="float" || $row['DATA_TYPE']=="double" || $row['DATA_TYPE']=="decimal"){
                             if(is_float($_POST[$row['COLUMN_NAME']])){
+                                //not verified, I dont use float
                                 $_SESSION['sql'].=$_POST[$row['COLUMN_NAME']];
                             }
                     }else{
@@ -84,8 +86,8 @@
                     while( $row = mysqli_fetch_row( $result ) ){
                         if (($row[0]!="information_schema") && ($row[0]!="mysql")) {
                             echo "<div class=\"form-check\">
-                                <input class=\"form-check-input\" onchange=\"this.form.submit();\" type=\"radio\" name=\"db\" value=\"".$row[0]."\"";
-                            if(isset($_GET['db']) && $_GET['db']==$row[0]){
+                                <input class=\"form-check-input\" onchange=\"this.form.submit();\" type=\"radio\" name=\"database\" value=\"".$row[0]."\"";
+                            if(isset($_GET['database']) && $_GET['database']==$row[0]){
                                 echo " checked";
                             }
                             echo "\">
@@ -99,18 +101,18 @@
             </form>
         </div>
         <div class="col-2 border border-dark">
-            <?php if(isset($_GET) && isset($_GET['db'])):?>
+            <?php if(isset($_GET) && isset($_GET['database'])):?>
                 <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
-                <h3><?php echo $_GET['db'];?></h3>
-                <input type="hidden" name="db" value="<?php echo htmlspecialchars($_GET['db']);?>">
+                <h3><?php echo $_GET['database'];?></h3>
+                <input type="hidden" name="database" value="<?php echo htmlspecialchars($_GET['database']);?>">
                     <?php
-                        $con = mysqli_connect("localhost","root","",$_GET['db']);
+                        $con = mysqli_connect("localhost","root","",$_GET['database']);
                         if (!$con)
                         {
                         die ('Could not connect:' . mysqli_error());
                         }
 
-                        $showtables= mysqli_query($con, "SHOW TABLES FROM ".$_GET['db']);
+                        $showtables= mysqli_query($con, "SHOW TABLES FROM ".$_GET['database']);
 
                         while($row = mysqli_fetch_array($showtables)) { 
                             echo "<div class=\"form-check\">
@@ -131,11 +133,11 @@
             <?php endif?>
         </div>
         <div class="col-8 border border-dark pb-2">
-            <?php if(isset($_GET) && isset($_GET['db'])):?>
+            <?php if(isset($_GET) && isset($_GET['database'])):?>
                 <?php if(isset($_GET['table'])):?>
                     <!-- <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post"> -->
-                    <form action="insertion.php?db=<?php echo $_GET['db']?>&table=<?php echo $_GET['table']?>" method="post">
-                    <input type="hidden" name="db" value="<?php echo htmlspecialchars($_GET['db']);?>">
+                    <form action="insertion_v2.php?database=<?php echo $_GET['database']?>&table=<?php echo $_GET['table']?>" method="post">
+                    <input type="hidden" name="database" value="<?php echo htmlspecialchars($_GET['database']);?>">
                     <input type="hidden" name="table" value="<?php echo htmlspecialchars($_GET['table']);?>">
                         <h3><?php echo $_GET['table'];?></h3>
                         <table class="table">
@@ -149,7 +151,7 @@
                                 }
                                 // echo "Connected successfully";
 
-                                $result = $conn->query("SELECT `COLUMN_NAME`,COLUMN_TYPE ,COLUMN_KEY ,IS_NULLABLE ,COLUMN_DEFAULT ,EXTRA ,DATA_TYPE ,CHARACTER_MAXIMUM_LENGTH  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".$_GET['db']."' AND TABLE_NAME = '".$_GET['table']."'");
+                                $result = $conn->query("SELECT `COLUMN_NAME`,COLUMN_TYPE ,COLUMN_KEY ,IS_NULLABLE ,COLUMN_DEFAULT ,EXTRA ,DATA_TYPE ,CHARACTER_MAXIMUM_LENGTH  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".$_GET['database']."' AND TABLE_NAME = '".$_GET['table']."'");
                                 if($result->num_rows>0){
                                     while($row = $result->fetch_assoc()){
                                         echo "<tr><td class=\" border border-dark\">".$row['COLUMN_NAME']."</td>
@@ -162,7 +164,7 @@
                                             echo "NO";
                                         }
                                         echo "</td><td class=\" border border-dark\">";
-                                        $sql2="SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA='".$_GET['db']."' and `REFERENCED_TABLE_NAME`!='' and TABLE_NAME='".$_GET['table']."' and COLUMN_NAME='".$row['COLUMN_NAME']."'";
+                                        $sql2="SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA='".$_GET['database']."' and `REFERENCED_TABLE_NAME`!='' and TABLE_NAME='".$_GET['table']."' and COLUMN_NAME='".$row['COLUMN_NAME']."'";
                                         $res2=$conn->query($sql2);                                        
                                         if($res2->num_rows>0){
                                             $row2=$res2->fetch_assoc();
@@ -242,7 +244,7 @@
                 echo $_SESSION['sql'];
                 unset($_SESSION['sql']);
             }else{
-                if(isset($_GET) && isset($_GET['db'])){
+                if(isset($_GET) && isset($_GET['database'])){
                     if(!isset($_GET['table'])){
                         echo "<h3>Select Table</h3>";
                     }else{
