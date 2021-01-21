@@ -327,11 +327,12 @@
             $('.updatefieldtext').on('dblclick',function(){
                 $(this).css({"display" : "none"});
                 $(this).next().css({"display" : "table-cell"});
-            });
-            $(':not(td)').on('click',function(){
-                // console.log('fdsfds')
-                $('.updatefieldtext').css({"display" : "table-cell"});
-                $('.updatefieldinput').css({"display" : "none"});
+                console.log($(this).next().find('>:first-child'))
+                let $textBox = $(this).next().find('>:first-child');
+                let temp = $textBox.val();
+                $textBox.focus();
+                $textBox.val('');
+                $textBox.val(temp);
             });
             $('.updatefield').on('focusout',function(){
                 let column = $(this).parent().prev().find('.firstupdate').val();
