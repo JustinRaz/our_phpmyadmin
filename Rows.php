@@ -16,11 +16,14 @@
     
     <?php require "navbar.php"?>
 
-<?php
-    $conn = new mysqli('localhost','root','',"{$_GET['database']}");
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+    <div class="container">
+
+        <a href="./Tables.php?database=<?php echo $_GET['database'] ?>">Back</a>
+    <?php
+        $conn = new mysqli('localhost','root','',"{$_GET['database']}");
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
 
     $rows = $conn->query("SELECT * FROM {$_GET['database']}.`{$_GET['table']}`");
     print_r($conn->error);

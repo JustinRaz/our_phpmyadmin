@@ -1,4 +1,15 @@
-<?php
+<!DOCTYPE html>
+<head>
+    <title>Insertion</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    
+</head>
+<body>
+    <?php require "navbar.php"?>
+
+    <?php
     session_start();
 
     if(isset($_POST['submit'])){
@@ -51,29 +62,18 @@
                     $_SESSION['sql'].=", ";
                 }
             }
+            
             $_SESSION['sql'].=")";
             if ($con->query($_SESSION['sql']) === TRUE) {
-                echo "<div class='m-2 alert alert-success'>New record created successfully</div>";
+                echo "<div class='m-2 alert alert-success '>New record created successfully</div>";
               } else {
                 echo "Error: " . $_SESSION['sql'] . "<br>" . $con->error;
               }
-              
+    
               $con->close();
-        }
+            }
     }
 ?>
-<!DOCTYPE html>
-<head>
-    <title>Insertion</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    
-</head>
-<body>
-
-    <?php require "navbar.php"?>
-
     <div class="container">
         <a href="./Rows.php?database=<?php echo $_GET['database'] ?>&table=<?php echo $_GET['table'] ?>">Back</a>
         
